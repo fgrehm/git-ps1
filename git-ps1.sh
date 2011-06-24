@@ -57,7 +57,7 @@ COLOR=$COLOR_DEFAULT
 
 # uncommited files
 if [ "$IND_UNSTAGED" != '0' ]; then
-    if [ "$( echo $GIT_STATUS | grep 'Changed\|uncommitted' )" ]; then
+    if [ "$( echo $GIT_STATUS | grep 'Changed\|uncommitted\|not staged' )" ]; then
         STATUS="${STATUS}${COLOR_UNSTAGED}${IND_UNSTAGED}"
     fi
 fi
