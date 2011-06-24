@@ -75,7 +75,7 @@ fi
 
 # untracked
 if [ "$IND_UNTRACKED" != '0' ]; then
-    if [ "$( echo $GIT_STATUS | grep 'Untracked' )" ]; then
+    if [ -n "$( git ls-files --others --exclude-standard )" ]; then
         STATUS="${STATUS}${COLOR_UNTRACKED}${IND_UNTRACKED}"
     fi
 fi
