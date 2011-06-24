@@ -57,9 +57,8 @@ COLOR=$COLOR_DEFAULT
 
 # uncommited files
 if [ "$IND_UNSTAGED" != '0' ]; then
-    if [ "$( echo $GIT_STATUS | grep 'Changed\|uncommitted\|not staged' )" ]; then
+    git diff --no-ext-diff --quiet --exit-code || \
         STATUS="${STATUS}${COLOR_UNSTAGED}${IND_UNSTAGED}"
-    fi
 fi
 
 # not on branch/behind origin
