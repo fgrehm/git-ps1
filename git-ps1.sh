@@ -54,6 +54,7 @@ IND_AHEAD_COUNT=${GITPS1_IND_AHEAD_COUNT:-@}
 
 STATUS=''
 COLOR=$COLOR_DEFAULT
+NO_COLOR=$( mkcolor 0 )
 
 # uncommited files
 if [ "$IND_UNSTAGED" != '0' ]; then
@@ -97,4 +98,4 @@ if [ "$IND_AHEAD" != '0' ]; then
 fi
 
 # output the status string
-echo " $COLOR[${BRANCH}${STATUS}${COLOR}]"
+echo "$COLOR[${BRANCH}${STATUS}${COLOR}]$NO_COLOR "
