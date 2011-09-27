@@ -97,5 +97,47 @@ if [ "$IND_AHEAD" != '0' ]; then
     fi
 fi
 
+# Since last commit based on https://gist.github.com/926846
+
+function format_unit {
+  local UNIT=$1
+  case "$UNIT" in
+      seconds) UNIT="s" ;;
+      minutes) UNIT="m" ;;
+      hours) UNIT="h" ;;
+      days) UNIT="d" ;;
+      weeks) UNIT="w" ;;
+      months) UNIT="mo" ;;
+      years) UNIT="yr" ;;
+      *);;
+  esac
+  echo ${UNIT}
+}
+
+SINCE_LAST_COMMIT=$(git log --pretty=format:'%ar' -1)
+SINCE_LAST_COMMIT=(${SINCE_LAST_COMMIT// / })
+
+VALUE=${SINCE_LAST_COMMIT[0]}
+
+UNIT=$(format_unit ${SINCE_LAST_COMMIT[1]/,/})
+
+# for old projects, git reports years and months
+if [ ${SINCE_LAST_COMMIT[2]} != "ago" ]; then
+  EXTRA_VALUE=${SINCE_LAST_COMMIT[2]}
+  EXTRA_UNIT=$(format_unit ${SINCE_LAST_COMMIT[3]/,/})
+fi
+
+DELTA_COLOR=''
+if [ "$UNIT" == "s" ] || [ "$UNIT" == "m" ]; then
+  DELTA_COLOR=$( mkcolor 32 )
+elif [ "$UNIT" == "h" ]; then
+  DELTA_COLOR=$( mkcolor 33 )
+else
+  DELTA_COLOR=$( mkcolor 31 )
+fi
+
+DELTA="${VALUE}${UNIT}${EXTRA_VALUE}${EXTRA_UNIT}"
+DELTA="∆${DELTA_COLOR}${DELTA}${NO_COLOR}"
+
 # output the status string
-echo "$COLOR[${BRANCH}${STATUS}${COLOR}]$NO_COLOR "
+echo "$COLOR[${BRANCH}${STATUS}${COLOR} ${DELTA}${COLOR}]$NO_COLOR "
